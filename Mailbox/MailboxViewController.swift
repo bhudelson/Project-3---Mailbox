@@ -21,6 +21,9 @@ class MailboxViewController: UIViewController {
     @IBOutlet weak var listIconView: UIImageView!
     @IBOutlet weak var rightBgView: UIImageView!
     @IBOutlet weak var leftBgView: UIImageView!
+    @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var listView: UIImageView!
+    @IBOutlet weak var hamburgerButton: UIButton!
     
     var messageOriginalCenter: CGPoint!
     var messageLeft: CGPoint!
@@ -29,6 +32,9 @@ class MailboxViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        laterIconView.alpha = 0.5
+        rescheduleView.alpha = 0
         
     
         
@@ -70,6 +76,8 @@ class MailboxViewController: UIViewController {
             
         } else if sender.state == UIGestureRecognizerState.Changed {
             message.center = CGPoint(x: messageOriginalCenter.x + translation.x, y: messageOriginalCenter.y)
+            
+            laterIconView.alpha = 1
         
         } else if sender.state == UIGestureRecognizerState.Ended {
             
@@ -78,6 +86,9 @@ class MailboxViewController: UIViewController {
                 //UIView.animateWithDuration(0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: <#T##UIViewAnimationOptions#>, animations: <#T##() -> Void#>, completion: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
                 
                 //})
+                
+                UIView.animateWithDuration(0.3, animations: { () -> Void in self.laterIconView.frame.origin.x = -10
+                })
                 
             } else {
                 
