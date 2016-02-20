@@ -10,39 +10,58 @@ import UIKit
 
 class MailboxViewController: UIViewController {
 
+    //Outlets
     @IBOutlet weak var menuView: UIImageView!
-    @IBOutlet weak var rescheduleView: UIImageView!
     @IBOutlet weak var message: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var hamburgerButton: UIButton!
+    @IBOutlet weak var feedWrapperView: UIView!
+    @IBOutlet weak var messageBgView: UIView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBOutlet weak var laterIconView: UIImageView!
+    
     @IBOutlet weak var deleteIconView: UIImageView!
     @IBOutlet weak var archiveIconView: UIImageView!
-    @IBOutlet weak var listIconView: UIImageView!
-    @IBOutlet weak var rightBgView: UIImageView!
-    @IBOutlet weak var leftBgView: UIImageView!
-    @IBOutlet weak var mainView: UIView!
-    @IBOutlet weak var listView: UIImageView!
-    @IBOutlet weak var hamburgerButton: UIButton!
     
+    @IBOutlet weak var listIconView: UIImageView!
+    @IBOutlet weak var laterIconView: UIImageView!
+    
+    @IBOutlet weak var leftIconView: UIView!
+    @IBOutlet weak var rightIconView: UIView!
+    
+    @IBOutlet weak var mainView: UIView!
+    
+    @IBOutlet weak var listView: UIImageView!
+    @IBOutlet weak var rescheduleView: UIImageView!
+    
+
+    //Variables
     var messageOriginalCenter: CGPoint!
     var messageLeft: CGPoint!
     var messageRight: CGPoint!
     var scrollViewOriginalCenter: CGPoint!
     
+    var mainViewInitialCenter: CGPoint!
+    var mainViewOriginalPosition: CGFloat!
+    var mainViewSwipedRightPosition: CGFloat!
+    var mainViewStartRightPositionX: CGFloat!
+    var mainViewStartRightPosition: CGPoint!
+    
+    
+    
+    
+    //ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        laterIconView.alpha = 0.5
-        rescheduleView.alpha = 0
-        
-    
-        
-//        messageOriginalCenter = 0
-        messageLeft = message.center
-//        messageRight = CGPoint(x: message.center.x ,y: message.center.y + messageOriginalCenter)
-
         scrollView.contentSize = CGSize(width: 320, height: 1350)
+        
+        rescheduleView.alpha = 0
+        listView.alpha = 0
+        
+        
+        messageLeft = message.center
+
+        
        
     }
 
@@ -50,6 +69,8 @@ class MailboxViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     @IBAction func didEdgePanFeed(sender: UIScreenEdgePanGestureRecognizer) {
         let translation = sender.translationInView(view)
@@ -65,21 +86,31 @@ class MailboxViewController: UIViewController {
         }
     }
     
+    //Pan Functions
     @IBAction func didPanMessage(sender: UIPanGestureRecognizer) {
         let translation = sender.translationInView(view)
         let messageVelocity = sender.velocityInView(view)
         
+        
+        //Pan Started
         if sender.state == UIGestureRecognizerState.Began {
             
         messageOriginalCenter = message.center
             
+        }
+         
             
-        } else if sender.state == UIGestureRecognizerState.Changed {
+        //Pan Changed
+        else if sender.state == UIGestureRecognizerState.Changed {
             message.center = CGPoint(x: messageOriginalCenter.x + translation.x, y: messageOriginalCenter.y)
             
             laterIconView.alpha = 1
         
-        } else if sender.state == UIGestureRecognizerState.Ended {
+            }
+            
+            
+        //Pan Ended
+        else if sender.state == UIGestureRecognizerState.Ended {
             
             if messageVelocity.y > 0 {
                 //UIView.animateWithDuration(0.3, animations: { () -> Void in self.trayView.center = self.trayDown
