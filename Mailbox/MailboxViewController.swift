@@ -99,25 +99,24 @@ class MailboxViewController: UIViewController {
     //Pan Functions
     @IBAction func didPanMessage(sender: UIPanGestureRecognizer) {
         let translation = sender.translationInView(view)
-        let messageVelocity = sender.velocityInView(view)
+//        let messageVelocity = sender.velocityInView(view)
         
         
-        //Pan Started
+        //Pan Began
         if sender.state == UIGestureRecognizerState.Began {
-            
-        messageOriginalCenter = message.center
+            messageOriginalCenter = message.center
             
         }
          
             
         //Pan Changed
         else if sender.state == UIGestureRecognizerState.Changed {
-            message.center = CGPoint(x: messageOriginalCenter.x + translation.x, y: messageOriginalCenter.y)
+            message.center = CGPoint(x: translation.x + messageOriginalCenter.x, y: messageOriginalCenter.y)
             
             //Alpha Conversions
             let leftIconViewConvertedAlpha = convertValue(translation.x, r1Min: 0, r1Max: 60, r2Min: 0, r2Max: 1)
             leftIconView.alpha = CGFloat(leftIconViewConvertedAlpha)
-            let rightIconConvertedAlpha = convertValue(translation.x, r1Min: -60, r1Max: -320, r2Min: 0, r2Max: -260)
+            let rightIconConvertedAlpha = convertValue(translation.x, r1Min: 0, r1Max: -60, r2Min: 0, r2Max: 1)
             rightIconView.alpha = CGFloat(rightIconConvertedAlpha)
             
             //Translation Conversions
@@ -126,7 +125,7 @@ class MailboxViewController: UIViewController {
             
             
             //Pan to right, gray bg
-            if translation.x >= 0 && translation.x < 60 { messageBgView.backgroundColor = UIColor (red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0)
+            if translation.x >= 0 && translation.x < 60 { messageBgView.backgroundColor = UIColor (red: 153/255, green: 153/255, blue: 153/255, alpha: 1.0)
                 archiveIconView.hidden = false
                 deleteIconView.hidden = true
                 listIconView.hidden = true
@@ -154,17 +153,17 @@ class MailboxViewController: UIViewController {
             }
                 
             //Pan to left, gray bg
-            else if translation.x >= 0 && translation.x < -60 {
+            else if translation.x <= 0 && translation.x > -60 {
                 messageBgView.backgroundColor = UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0)
                 self.archiveIconView.hidden = true
-                self.deleteIconView.hidden = false
+                self.deleteIconView.hidden = true
                 self.listIconView.hidden = true
-                self.laterIconView.hidden = true
+                self.laterIconView.hidden = false
             }
                 
-            //Pan to left, blue bg
+            //Pan to left, yellow bg
             else if translation.x <= -60 && translation.x > -260 {
-                messageBgView.backgroundColor = UIColor(red: 42/255, green: 150/255, blue: 250/255, alpha: 1.0)
+                messageBgView.backgroundColor = UIColor(red: 253/255, green: 237/255, blue: 33/255, alpha: 1.0)
                 rightIconView.transform = CGAffineTransformMakeTranslation(rightIconViewConvertedTranslation, 0)
                 self.archiveIconView.hidden = true
                 self.deleteIconView.hidden = true
@@ -173,9 +172,9 @@ class MailboxViewController: UIViewController {
             }
                 
                 
-        //Pan to left, dark gray bg
+        //Pan to left, brown bg
         else if translation.x <= -260 {
-                messageBgView.backgroundColor = UIColor(red: 61/255, green: 61/255, blue: 61/255, alpha: 1.0)
+                messageBgView.backgroundColor = UIColor(red: 162/255, green: 151/255, blue: 128/255, alpha: 1.0)
                 rightIconView.transform = CGAffineTransformMakeTranslation(rightIconViewConvertedTranslation, 0)
                 self.archiveIconView.hidden = true
                 self.deleteIconView.hidden = true
@@ -187,6 +186,8 @@ class MailboxViewController: UIViewController {
         else if sender.state == UIGestureRecognizerState.Ended {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
             
+                
+                //Pan to right, finish swipe, archive message
                 if translation.x >= 60 && translation.x < 260 {
                 self.message.center.x = self.swipedRightPosition
                         
@@ -200,8 +201,21 @@ class MailboxViewController: UIViewController {
             }
                     
                     
-        //Pan to left, finish swipe, show reschedule view
-        else if translation.x <= -60 && translation.x > -260 {
+                //Pan to right, finish pan, delete message
+                else if translation.x >= 260 {
+                self.message.center.x = self.swipedRightPosition
+                    
+                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                self.deleteIconView.alpha = 0
+                }) { (Bool) -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.feedWrapperView.frame.origin.y = self.feedWrapperViewInitialY + self.feedWrapperViewOffset
+                            })
+                    }
+                }
+                    
+                //Pan to left, finish pan, show reschedule view
+                else if translation.x <= -60 && translation.x > -260 {
                 self.message.center.x = self.swipedLeftPosition
             
                         
@@ -214,30 +228,50 @@ class MailboxViewController: UIViewController {
                         })
                         
                 }
+                
+                //Pan to left, finish swipe, show LO
+                else if translation.x <= -260 {
+                    print("Ended translation.x smaller than -260")
+                    print("Finished swipe to left, showing LO")
+                    self.message.center.x = self.swipedLeftPosition
                     
+                    UIView.animateWithDuration(0.1, animations:  { () -> Void in
+                        self.listIconView.alpha = 0
+                    })
                     
+                    UIView.animateWithDuration(0.1, animations: { () -> Void in
+                        self.listView.alpha = 1
+                    })
                     
-            if messageVelocity.y > 0 {
-               
+                }
+                    
+                //Pan either direction, snap back to center
+                else {
+                self.message.center.x = self.snappedBackPosition
                     }
-                
-                })
-                
-            } else {
-                
-                UIView.animateWithDuration(0.3, animations: { () -> Void in self.message.center = self.messageLeft
                     
-                    
+//            if messageVelocity.y > 0 {
+//               
+//                    }
+                
                 })
                 
             }
             
+//            else {
+//                
+//                UIView.animateWithDuration(0.3, animations: { () -> Void in self.message.center = self.messageLeft
+//                    
+//                    
+//                })
+            
+            }
+            
             
             }
                 
             }
             
-        }
 
 
 

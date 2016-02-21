@@ -38,15 +38,15 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" id="yzf-4D-5m6">
-                                                                <rect key="frame" x="275" y="30" width="25" height="25"/>
+                                                                <rect key="frame" x="275" y="30" width="25" height="30"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <subviews>
                                                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="later_icon" id="e4X-5i-Bd0">
-                                                                        <rect key="frame" x="107" y="52" width="25" height="25"/>
+                                                                        <rect key="frame" x="-3" y="3" width="25" height="25"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                     </imageView>
                                                                     <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="list_icon" id="jg4-Fe-Dg0">
-                                                                        <rect key="frame" x="107" y="52" width="25" height="25"/>
+                                                                        <rect key="frame" x="-3" y="3" width="25" height="25"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                     </imageView>
                                                                 </subviews>
