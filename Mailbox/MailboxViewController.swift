@@ -104,11 +104,57 @@ class MailboxViewController: UIViewController {
         else if sender.state == UIGestureRecognizerState.Changed {
             message.center = CGPoint(x: messageOriginalCenter.x + translation.x, y: messageOriginalCenter.y)
             
-            laterIconView.alpha = 1
+            //Alpha Conversions
+            let leftIconViewConvertedAlpha = convertValue(translation.x, r1Min: 0, r1Max: 60, r2Min: 0, r2Max: 1)
+            leftIconView.alpha = CGFloat(leftIconViewConvertedAlpha)
+            let rightIconConvertedAlpha = convertValue(translation.x, r1Min: -60, r1Max: -320, r2Min: 0, r2Max: -260)
+            rightIconView.alpha = CGFloat(rightIconConvertedAlpha)
+            
+            //Translation Conversions
+            let leftIconViewConvertedTranslation = convertValue(translation.x, r1Min: 60, r1Max: 320, r2Min: 0, r2Max: 260)
+            let rightIconViewConvertedTranslation = convertValue(translation.x, r1Min: -60, r1Max: -320, r2Min: 0, r2Max: -260)
+            
+            
+            //Pan to right, gray bg
+            if translation.x >= 0 && translation.x < 60 { messageBgView.backgroundColor = UIColor (red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0)
+                archiveIconView.hidden = false
+                deleteIconView.hidden = true
+                listIconView.hidden = true
+                laterIconView.hidden = true
         
             }
             
+            //Pan to right, green bg
+            else if translation.x >= 60 && translation.x < 260 { messageBgView.backgroundColor = UIColor(red: 97/255, green: 211/255, blue: 80/255, alpha: 1.0)
+                self.leftIconView.transform = CGAffineTransformMakeTranslation(leftIconViewConvertedTranslation, 0)
+                self.archiveIconView.hidden = false
+                self.deleteIconView.hidden = true
+                self.listIconView.hidden = true
+                self.laterIconView.hidden = true
+            }
             
+            //Pan to right, red bg
+            else if translation.x >= 260 {
+                messageBgView.backgroundColor = UIColor(red: 228/255, green: 61/255, blue: 39/255, alpha: 1.0)
+                leftIconView.transform = CGAffineTransformMakeTranslation(leftIconViewConvertedTranslation, 0)
+                self.archiveIconView.hidden = true
+                self.deleteIconView.hidden = false
+                self.listIconView.hidden = true
+                self.laterIconView.hidden = true
+            }
+                
+            //Pan to left, gray bg
+            else if translation.x >= 0 && translation.x < -60 {
+                messageBgView.backgroundColor = UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1.0)
+                self.archiveIconView.hidden = true
+                self.deleteIconView.hidden = false
+                self.listIconView.hidden = true
+                self.laterIconView.hidden = true
+            }
+                
+            //Pan to left, yellow bg
+            
+                
         //Pan Ended
         else if sender.state == UIGestureRecognizerState.Ended {
             
@@ -138,4 +184,4 @@ class MailboxViewController: UIViewController {
         }
 
 
-
+}

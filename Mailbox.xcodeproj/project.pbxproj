@@ -13,6 +13,7 @@
 		CC5EACC11C76D09100E771BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC5EACC01C76D09100E771BB /* Assets.xcassets */; };
 		CC5EACC41C76D09100E771BB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC5EACC21C76D09100E771BB /* LaunchScreen.storyboard */; };
 		CC5EACCC1C76D2CA00E771BB /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5EACCB1C76D2CA00E771BB /* MailboxViewController.swift */; };
+		CC96CC721C7932BF00C6B0CC /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC96CC711C7932BF00C6B0CC /* Common.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		CC5EACC31C76D09100E771BB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CC5EACC51C76D09100E771BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC5EACCB1C76D2CA00E771BB /* MailboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewController.swift; sourceTree = "<group>"; };
+		CC96CC711C7932BF00C6B0CC /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = ../Common.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		CC5EACB81C76D09000E771BB /* Mailbox */ = {
 			isa = PBXGroup;
 			children = (
+				CC96CC711C7932BF00C6B0CC /* Common.swift */,
 				CC5EACB91C76D09100E771BB /* AppDelegate.swift */,
 				CC5EACBB1C76D09100E771BB /* ViewController.swift */,
 				CC5EACBD1C76D09100E771BB /* Main.storyboard */,
@@ -139,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC96CC721C7932BF00C6B0CC /* Common.swift in Sources */,
 				CC5EACBC1C76D09100E771BB /* ViewController.swift in Sources */,
 				CC5EACBA1C76D09100E771BB /* AppDelegate.swift in Sources */,
 				CC5EACCC1C76D2CA00E771BB /* MailboxViewController.swift in Sources */,
@@ -289,6 +293,7 @@
 				CC5EACCA1C76D09100E771BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
