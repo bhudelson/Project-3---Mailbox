@@ -46,6 +46,12 @@ class MailboxViewController: UIViewController {
     var mainViewStartRightPositionX: CGFloat!
     var mainViewStartRightPosition: CGPoint!
     
+    var swipedRightPosition: CGFloat!
+    var swipedLeftPosition: CGFloat!
+    var snappedBackPosition: CGFloat!
+    
+    var feedWrapperViewInitialY: CGFloat!
+    var feedWrapperViewOffset: CGFloat!
     
     
     
@@ -54,6 +60,10 @@ class MailboxViewController: UIViewController {
         super.viewDidLoad()
         
         scrollView.contentSize = CGSize(width: 320, height: 1350)
+        
+        snappedBackPosition = message.center.x
+        swipedRightPosition = message.center.x + 320
+        swipedLeftPosition = message.center.x - 320
         
         rescheduleView.alpha = 0
         listView.alpha = 0
@@ -125,7 +135,7 @@ class MailboxViewController: UIViewController {
             }
             
             //Pan to right, green bg
-            else if translation.x >= 60 && translation.x < 260 { messageBgView.backgroundColor = UIColor(red: 97/255, green: 211/255, blue: 80/255, alpha: 1.0)
+            else if translation.x >= 60 && translation.x < 260 { messageBgView.backgroundColor = UIColor(red: 151/255, green: 242/255, blue: 61/255, alpha: 1.0)
                 self.leftIconView.transform = CGAffineTransformMakeTranslation(leftIconViewConvertedTranslation, 0)
                 self.archiveIconView.hidden = false
                 self.deleteIconView.hidden = true
@@ -135,7 +145,7 @@ class MailboxViewController: UIViewController {
             
             //Pan to right, red bg
             else if translation.x >= 260 {
-                messageBgView.backgroundColor = UIColor(red: 228/255, green: 61/255, blue: 39/255, alpha: 1.0)
+                messageBgView.backgroundColor = UIColor(red: 250/255, green: 77/255, blue: 67/255, alpha: 1.0)
                 leftIconView.transform = CGAffineTransformMakeTranslation(leftIconViewConvertedTranslation, 0)
                 self.archiveIconView.hidden = true
                 self.deleteIconView.hidden = false
@@ -152,19 +162,65 @@ class MailboxViewController: UIViewController {
                 self.laterIconView.hidden = true
             }
                 
-            //Pan to left, yellow bg
-            
+            //Pan to left, blue bg
+            else if translation.x <= -60 && translation.x > -260 {
+                messageBgView.backgroundColor = UIColor(red: 42/255, green: 150/255, blue: 250/255, alpha: 1.0)
+                rightIconView.transform = CGAffineTransformMakeTranslation(rightIconViewConvertedTranslation, 0)
+                self.archiveIconView.hidden = true
+                self.deleteIconView.hidden = true
+                self.listIconView.hidden = true
+                self.laterIconView.hidden = false
+            }
+                
+                
+        //Pan to left, dark gray bg
+        else if translation.x <= -260 {
+                messageBgView.backgroundColor = UIColor(red: 61/255, green: 61/255, blue: 61/255, alpha: 1.0)
+                rightIconView.transform = CGAffineTransformMakeTranslation(rightIconViewConvertedTranslation, 0)
+                self.archiveIconView.hidden = true
+                self.deleteIconView.hidden = true
+                self.listIconView.hidden = false
+                self.laterIconView.hidden = true
+            }
                 
         //Pan Ended
         else if sender.state == UIGestureRecognizerState.Ended {
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
             
+                if translation.x >= 60 && translation.x < 260 {
+                self.message.center.x = self.swipedRightPosition
+                        
+                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                self.archiveIconView.alpha = 0
+                }) { (Bool) -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.feedWrapperView.frame.origin.y = self.feedWrapperViewInitialY + self.feedWrapperViewOffset
+                    })
+                }
+            }
+                    
+                    
+        //Pan to left, finish swipe, show reschedule view
+        else if translation.x <= -60 && translation.x > -260 {
+                self.message.center.x = self.swipedLeftPosition
+            
+                        
+                UIView.animateWithDuration(0.1, animations:  { () -> Void in
+                self.laterIconView.alpha = 0
+                })
+                        
+                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                    self.rescheduleView.alpha = 1
+                        })
+                        
+                }
+                    
+                    
+                    
             if messageVelocity.y > 0 {
-                //UIView.animateWithDuration(0.3, animations: { () -> Void in self.trayView.center = self.trayDown
-                //UIView.animateWithDuration(0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: <#T##UIViewAnimationOptions#>, animations: <#T##() -> Void#>, completion: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
+               
+                    }
                 
-                //})
-                
-                UIView.animateWithDuration(0.3, animations: { () -> Void in self.laterIconView.frame.origin.x = -10
                 })
                 
             } else {
@@ -184,4 +240,4 @@ class MailboxViewController: UIViewController {
         }
 
 
-}
+
