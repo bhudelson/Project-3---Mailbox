@@ -117,13 +117,21 @@
                                     <outletCollection property="gestureRecognizers" destination="Cbt-tz-EP5" appends="YES" id="wWe-bh-1kE"/>
                                 </connections>
                             </view>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="center" image="reschedule" id="Lfc-kc-SMw">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                            </imageView>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="center" image="list" id="0Xo-vy-STR">
                                 <rect key="frame" x="0.0" y="67" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Yo8-11-2yn" appends="YES" id="Nsc-PH-1GM"/>
+                                </connections>
+                            </imageView>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="center" image="reschedule" id="Lfc-kc-SMw">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="G5K-rc-NWZ" appends="YES" id="Mjo-b0-pnx"/>
+                                </connections>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -160,6 +168,16 @@
                         <action selector="onEdgePan:" destination="BYZ-38-t0r" id="JMF-Hq-esh"/>
                     </connections>
                 </screenEdgePanGestureRecognizer>
+                <tapGestureRecognizer id="G5K-rc-NWZ">
+                    <connections>
+                        <action selector="didTapRescheduleView:" destination="BYZ-38-t0r" id="zxA-py-7dE"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Yo8-11-2yn">
+                    <connections>
+                        <action selector="didTapListViewTest:" destination="BYZ-38-t0r" id="vMZ-o1-hG8"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="292" y="508"/>
         </scene>

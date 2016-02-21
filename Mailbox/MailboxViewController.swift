@@ -126,7 +126,6 @@ class MailboxViewController: UIViewController {
     //Pan Functions
     @IBAction func didPanMessage(sender: UIPanGestureRecognizer) {
         let translation = sender.translationInView(view)
-//        let messageVelocity = sender.velocityInView(view)
         
         
         //Pan Began
@@ -284,20 +283,35 @@ class MailboxViewController: UIViewController {
                 
             }
             
-//            else {
-//                
-//                UIView.animateWithDuration(0.3, animations: { () -> Void in self.message.center = self.messageLeft
-//                    
-//                    
-//                })
             
+        
             }
-            
-            
-            }
-                
-            }
+        
             
 
-
-
+            
+        }
+    
+    
+    //Dismissing the Reschedule View
+    @IBAction func didTapRescheduleView(sender: UITapGestureRecognizer) {
+        UIView.animateWithDuration(0.2, animations:  { () -> Void in
+            self.rescheduleView.alpha = 0
+            }) { (Bool) -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.feedWrapperView.frame.origin.y = self.feedWrapperViewInitialY + self.feedWrapperViewOffset
+                })
+    }
+    }
+    
+    //Dismissing the List View
+    @IBAction func didTapListViewTest(sender: UITapGestureRecognizer) {
+        UIView.animateWithDuration(0.2, animations:  { () -> Void in
+            self.listView.alpha = 0
+            }) { (Bool) -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.feedWrapperView.frame.origin.y = self.feedWrapperViewInitialY + self.feedWrapperViewOffset
+                })
+        }
+    }
+    }
