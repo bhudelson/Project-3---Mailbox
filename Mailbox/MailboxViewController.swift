@@ -35,10 +35,11 @@ class MailboxViewController: UIViewController {
     
 
     //Variables
-    var messageOriginalCenter: CGPoint!
-    var messageLeft: CGPoint!
-    var messageRight: CGPoint!
-    var scrollViewOriginalCenter: CGPoint!
+    var messageInitialCenter: CGPoint!
+    var swipedRightPosition: CGFloat!
+    var snappedBackPosition: CGFloat!
+    var swipedLeftPosition: CGFloat!
+    
     
     var mainViewInitialCenter: CGPoint!
     var mainViewOriginalPosition: CGFloat!
@@ -46,12 +47,15 @@ class MailboxViewController: UIViewController {
     var mainViewStartRightPositionX: CGFloat!
     var mainViewStartRightPosition: CGPoint!
     
-    var swipedRightPosition: CGFloat!
-    var swipedLeftPosition: CGFloat!
-    var snappedBackPosition: CGFloat!
     
     var feedWrapperViewInitialY: CGFloat!
     var feedWrapperViewOffset: CGFloat!
+    
+    var mainViewSwiped: Bool!
+    var messageSnoozed: Bool!
+    var messageArchived: Bool!
+    var messageDeleted: Bool!
+    var messageMoved: Bool!
     
     
     
@@ -60,6 +64,7 @@ class MailboxViewController: UIViewController {
         super.viewDidLoad()
         
         scrollView.contentSize = CGSize(width: 320, height: 1350)
+        
         
         snappedBackPosition = message.center.x
         swipedRightPosition = message.center.x + 320
@@ -78,9 +83,12 @@ class MailboxViewController: UIViewController {
         mainViewOriginalPosition = mainView.center.x
         mainViewSwipedRightPosition = mainView.center.x + 280
         mainViewStartRightPositionX = mainView.center.x + 280
-//        messageLeft = message.center
 
-        
+        mainViewSwiped = false
+        messageSnoozed = false
+        messageMoved = false
+        messageDeleted = false
+        messageArchived = false
        
     }
 
@@ -127,17 +135,18 @@ class MailboxViewController: UIViewController {
     @IBAction func didPanMessage(sender: UIPanGestureRecognizer) {
         let translation = sender.translationInView(view)
         
+//        var velocity = sender.velocityInView(view)
         
         //Pan Began
         if sender.state == UIGestureRecognizerState.Began {
-            messageOriginalCenter = message.center
+            messageInitialCenter = message.center
             
         }
          
             
         //Pan Changed
         else if sender.state == UIGestureRecognizerState.Changed {
-            message.center = CGPoint(x: translation.x + messageOriginalCenter.x, y: messageOriginalCenter.y)
+            message.center = CGPoint(x: translation.x + messageInitialCenter.x, y: messageInitialCenter.y)
             
             //Alpha Conversions
             let leftIconViewConvertedAlpha = convertValue(translation.x, r1Min: 0, r1Max: 60, r2Min: 0, r2Max: 1)
@@ -210,12 +219,13 @@ class MailboxViewController: UIViewController {
                 
         //Pan Ended
         else if sender.state == UIGestureRecognizerState.Ended {
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
-            
-                
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    
+                    
                 //Pan to right, finish swipe, archive message
                 if translation.x >= 60 && translation.x < 260 {
                 self.message.center.x = self.swipedRightPosition
+                self.messageArchived = true
                         
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.archiveIconView.alpha = 0
@@ -230,8 +240,9 @@ class MailboxViewController: UIViewController {
                 //Pan to right, finish pan, delete message
                 else if translation.x >= 260 {
                 self.message.center.x = self.swipedRightPosition
+                self.messageDeleted = true
                     
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                UIView.animateWithDuration(0.1, animations: { () -> Void in
                 self.deleteIconView.alpha = 0
                 }) { (Bool) -> Void in
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -243,6 +254,7 @@ class MailboxViewController: UIViewController {
                 //Pan to left, finish pan, show reschedule view
                 else if translation.x <= -60 && translation.x > -260 {
                 self.message.center.x = self.swipedLeftPosition
+                self.messageSnoozed = true
             
                         
                 UIView.animateWithDuration(0.1, animations:  { () -> Void in
@@ -257,8 +269,8 @@ class MailboxViewController: UIViewController {
                 
                 //Pan to left, finish swipe, show LO
                 else if translation.x <= -260 {
-            
                     self.message.center.x = self.swipedLeftPosition
+                    self.messageMoved = true
                     
                     UIView.animateWithDuration(0.1, animations:  { () -> Void in
                         self.listIconView.alpha = 0
@@ -270,14 +282,13 @@ class MailboxViewController: UIViewController {
                     
                 }
                     
-                //Pan either direction, snap back to center
+                //Pan in each direction, snap to center
                 else {
-                self.message.center.x = self.snappedBackPosition
-                    }
+                    self.message.center.x = self.snappedBackPosition
+
                     
-//            if messageVelocity.y > 0 {
-//               
-//                    }
+                    }
+                        
                 
                 })
                 
@@ -291,6 +302,9 @@ class MailboxViewController: UIViewController {
 
             
         }
+    
+    
+    //Closing the menu view
     
     
     //Dismissing the Reschedule View
