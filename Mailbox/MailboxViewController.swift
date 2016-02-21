@@ -68,8 +68,17 @@ class MailboxViewController: UIViewController {
         rescheduleView.alpha = 0
         listView.alpha = 0
         
+        feedWrapperViewInitialY = feedWrapperView.frame.origin.y
+        feedWrapperViewOffset = -86
         
-        messageLeft = message.center
+        let edgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: "onEdgePan:")
+        edgeGesture.edges = UIRectEdge.Left
+        mainView.addGestureRecognizer(edgeGesture)
+        
+        mainViewOriginalPosition = mainView.center.x
+        mainViewSwipedRightPosition = mainView.center.x + 280
+        mainViewStartRightPositionX = mainView.center.x + 280
+//        messageLeft = message.center
 
         
        
@@ -81,20 +90,38 @@ class MailboxViewController: UIViewController {
     }
     
     
+    //Edge pan main view
     
-    @IBAction func didEdgePanFeed(sender: UIScreenEdgePanGestureRecognizer) {
+    @IBAction func onEdgePan(sender: UIScreenEdgePanGestureRecognizer) {
         let translation = sender.translationInView(view)
-        let scrollViewVelocity = sender.velocityInView(view)
-        var edgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: "onEdgePan:")
-        edgeGesture.edges = UIRectEdge.Left
-        scrollView.addGestureRecognizer(edgeGesture)
+        let velocity = sender.velocityInView(view)
+        print("Edge panning + \(translation.x)")
+        print(velocity.x)
+        
         
         if sender.state == UIGestureRecognizerState.Began {
-            scrollViewOriginalCenter = scrollView.center
+            print("Edge pan began")
+            mainViewInitialCenter = mainView.center
             
             
+        } else if sender.state == UIGestureRecognizerState.Changed {
+            mainView.center = CGPoint(x: translation.x + mainViewInitialCenter.x, y: mainViewInitialCenter.y)
+            
+            
+        } else if sender.state == UIGestureRecognizerState.Ended {
+            print("Edge pan ended")
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                if velocity.x > 0 {
+                    self.mainView.center.x = self.mainViewSwipedRightPosition
+                } else if velocity.x < 0 {
+                    self.mainView.center.x = self.mainViewOriginalPosition
+                }
+            })
         }
+
     }
+    
+
     
     //Pan Functions
     @IBAction func didPanMessage(sender: UIPanGestureRecognizer) {
@@ -191,7 +218,7 @@ class MailboxViewController: UIViewController {
                 if translation.x >= 60 && translation.x < 260 {
                 self.message.center.x = self.swipedRightPosition
                         
-                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.archiveIconView.alpha = 0
                 }) { (Bool) -> Void in
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -205,7 +232,7 @@ class MailboxViewController: UIViewController {
                 else if translation.x >= 260 {
                 self.message.center.x = self.swipedRightPosition
                     
-                UIView.animateWithDuration(0.1, animations: { () -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.deleteIconView.alpha = 0
                 }) { (Bool) -> Void in
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -231,8 +258,7 @@ class MailboxViewController: UIViewController {
                 
                 //Pan to left, finish swipe, show LO
                 else if translation.x <= -260 {
-                    print("Ended translation.x smaller than -260")
-                    print("Finished swipe to left, showing LO")
+            
                     self.message.center.x = self.swipedLeftPosition
                     
                     UIView.animateWithDuration(0.1, animations:  { () -> Void in
