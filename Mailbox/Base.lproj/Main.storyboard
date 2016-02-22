@@ -82,8 +82,9 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="help_label" id="UCS-j6-6J4">
-                                                <rect key="frame" x="0.0" y="67" width="320" height="37"/>
+                                                <rect key="frame" x="0.0" y="65" width="320" height="40"/>
                                                 <autoresizingMask key="autoresizingMask"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </imageView>
                                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="search" id="2SD-mm-Pp3">
                                                 <rect key="frame" x="0.0" y="104" width="320" height="42"/>
