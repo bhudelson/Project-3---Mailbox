@@ -103,12 +103,8 @@ class MailboxViewController: UIViewController {
     @IBAction func onEdgePan(sender: UIScreenEdgePanGestureRecognizer) {
         let translation = sender.translationInView(view)
         let velocity = sender.velocityInView(view)
-        print("Edge panning + \(translation.x)")
-        print(velocity.x)
-        
         
         if sender.state == UIGestureRecognizerState.Began {
-            print("Edge pan began")
             mainViewInitialCenter = mainView.center
             
             
@@ -117,7 +113,6 @@ class MailboxViewController: UIViewController {
             
             
         } else if sender.state == UIGestureRecognizerState.Ended {
-            print("Edge pan ended")
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 if velocity.x > 0 {
                     self.mainView.center.x = self.mainViewSwipedRightPosition
@@ -160,7 +155,8 @@ class MailboxViewController: UIViewController {
             
             
             //Pan to right, gray bg
-            if translation.x >= 0 && translation.x < 60 { messageBgView.backgroundColor = UIColor (red: 153/255, green: 153/255, blue: 153/255, alpha: 1.0)
+            if translation.x >= 0 && translation.x < 60 {
+                messageBgView.backgroundColor = UIColor (red: 153/255, green: 153/255, blue: 153/255, alpha: 1.0)
                 archiveIconView.hidden = false
                 deleteIconView.hidden = true
                 listIconView.hidden = true
@@ -169,7 +165,8 @@ class MailboxViewController: UIViewController {
             }
             
             //Pan to right, green bg
-            else if translation.x >= 60 && translation.x < 260 { messageBgView.backgroundColor = UIColor(red: 151/255, green: 242/255, blue: 61/255, alpha: 1.0)
+            else if translation.x >= 60 && translation.x < 260 {
+                messageBgView.backgroundColor = UIColor(red: 151/255, green: 242/255, blue: 61/255, alpha: 1.0)
                 self.leftIconView.transform = CGAffineTransformMakeTranslation(leftIconViewConvertedTranslation, 0)
                 self.archiveIconView.hidden = false
                 self.deleteIconView.hidden = true
@@ -216,7 +213,8 @@ class MailboxViewController: UIViewController {
                 self.listIconView.hidden = false
                 self.laterIconView.hidden = true
             }
-                
+        }
+            
         //Pan Ended
         else if sender.state == UIGestureRecognizerState.Ended {
                     UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -225,8 +223,8 @@ class MailboxViewController: UIViewController {
                 //Pan to right, finish swipe, archive message
                 if translation.x >= 60 && translation.x < 260 {
                 self.message.center.x = self.swipedRightPosition
-                self.messageArchived = true
-                        
+//                self.messageArchived = true
+                    
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.archiveIconView.alpha = 0
                 }) { (Bool) -> Void in
@@ -240,7 +238,7 @@ class MailboxViewController: UIViewController {
                 //Pan to right, finish pan, delete message
                 else if translation.x >= 260 {
                 self.message.center.x = self.swipedRightPosition
-                self.messageDeleted = true
+//                self.messageDeleted = true
                     
                 UIView.animateWithDuration(0.1, animations: { () -> Void in
                 self.deleteIconView.alpha = 0
@@ -254,7 +252,7 @@ class MailboxViewController: UIViewController {
                 //Pan to left, finish pan, show reschedule view
                 else if translation.x <= -60 && translation.x > -260 {
                 self.message.center.x = self.swipedLeftPosition
-                self.messageSnoozed = true
+//                self.messageSnoozed = true
             
                         
                 UIView.animateWithDuration(0.1, animations:  { () -> Void in
@@ -270,7 +268,7 @@ class MailboxViewController: UIViewController {
                 //Pan to left, finish swipe, show LO
                 else if translation.x <= -260 {
                     self.message.center.x = self.swipedLeftPosition
-                    self.messageMoved = true
+//                    self.messageMoved = true
                     
                     UIView.animateWithDuration(0.1, animations:  { () -> Void in
                         self.listIconView.alpha = 0
@@ -297,12 +295,29 @@ class MailboxViewController: UIViewController {
             
         
             }
-        
-            
-
-            
-        }
     
+    //Segmented control
+    @IBAction func didToggleNav(sender: UISegmentedControl) {
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.scrollView.frame.origin.x = 0
+            })
+        case 1:
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.scrollView.frame.origin.x = -320
+            })
+        case 2:
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.scrollView.frame.origin.x = -640
+            })
+        default:
+            break;
+        }
+    }
+    
+        
+
     
     //Closing the menu view
     

@@ -22,8 +22,8 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Ybf-G8-TJ1">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1350"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="960" height="586"/>
+                                        <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" id="rQI-eM-Eie">
                                                 <rect key="frame" x="0.0" y="144" width="320" height="1210"/>
@@ -89,6 +89,14 @@
                                                 <rect key="frame" x="0.0" y="104" width="320" height="42"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="feed" id="Eq1-VM-p6a" userLabel="Archived Feed">
+                                                <rect key="frame" x="640" y="65" width="320" height="1202"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="feed" id="1b7-ti-HLh" userLabel="Later Feed">
+                                                <rect key="frame" x="320" y="65" width="320" height="1202"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                            </imageView>
                                         </subviews>
                                         <gestureRecognizers/>
                                     </scrollView>
@@ -97,7 +105,7 @@
                                         <autoresizingMask key="autoresizingMask"/>
                                     </imageView>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" id="Ial-7S-Ga5">
-                                        <rect key="frame" x="99" y="26" width="121" height="29"/>
+                                        <rect key="frame" x="80" y="27" width="160" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="" image="later_icon"/>
@@ -105,6 +113,9 @@
                                             <segment title="" image="archive_icon"/>
                                         </segments>
                                         <color key="tintColor" red="0.37647058823529411" green="0.72156862745098038" blue="0.85098039215686272" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="didToggleNav:" destination="BYZ-38-t0r" eventType="valueChanged" id="6Fa-Lk-gKB"/>
+                                        </connections>
                                     </segmentedControl>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="c3t-B9-Z3p">
                                         <rect key="frame" x="0.0" y="0.0" width="65" height="67"/>
